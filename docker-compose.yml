@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: meu-postgres
+    environment:
+      POSTGRES_USER: usuario
+      POSTGRES_PASSWORD: senha
+      POSTGRES_DB: meubanco
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - minha-rede
+
+  api:
+    build: .
+    container_name: minha-api
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - minha-rede
+
+networks:
+  minha-rede:
+
+volumes:
+  pgdata:
